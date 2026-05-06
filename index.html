@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IQ Test — Measure Your Intelligence</title>
+  <meta name="description" content="Take our free IQ test. 30 scientifically-designed questions across 5 cognitive categories. Get your IQ score and percentile ranking instantly.">
+
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/landing.css">
+  <link rel="stylesheet" href="css/instructions.css">
+  <link rel="stylesheet" href="css/test.css">
+  <link rel="stylesheet" href="css/results.css">
+</head>
+<body>
+
+  <!-- ═══════════════════ VIEW: LANDING ════════════════════════ -->
+  <section id="view-landing" class="view view--active">
+
+    <header class="site-header">
+      <div class="logo">IQ Test</div>
+    </header>
+
+    <main class="landing-hero">
+      <div class="hero-badge">Free &amp; Instant Results</div>
+      <h1>Discover Your IQ Score</h1>
+      <p class="hero-sub">
+        30 scientifically-designed questions across 5 cognitive categories.
+        Complete the test in under 20 minutes and get your score instantly.
+      </p>
+      <button class="btn btn--primary btn--lg" id="btn-start-landing">
+        Start Free IQ Test
+      </button>
+    </main>
+
+    <section class="stats-strip" aria-label="Test statistics">
+      <div class="stat">
+        <span class="stat-num">30</span>
+        <span class="stat-label">Questions</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">20</span>
+        <span class="stat-label">Minutes</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">5</span>
+        <span class="stat-label">Categories</span>
+      </div>
+    </section>
+
+    <section class="question-types" aria-label="Question categories">
+      <h2>What We Measure</h2>
+      <p class="section-sub">A well-rounded assessment of your cognitive abilities</p>
+      <div class="type-grid">
+        <div class="type-card">
+          <div class="type-icon">🔢</div>
+          <div class="type-name">Number Sequences</div>
+          <div class="type-desc">Identify patterns in numerical progressions</div>
+        </div>
+        <div class="type-card">
+          <div class="type-icon">🔲</div>
+          <div class="type-name">Pattern Matrices</div>
+          <div class="type-desc">Complete visual and numerical matrix patterns</div>
+        </div>
+        <div class="type-card">
+          <div class="type-icon">🔤</div>
+          <div class="type-name">Verbal Analogies</div>
+          <div class="type-desc">Understand relationships between concepts</div>
+        </div>
+        <div class="type-card">
+          <div class="type-icon">🧩</div>
+          <div class="type-name">Logical Reasoning</div>
+          <div class="type-desc">Deductive and inductive reasoning challenges</div>
+        </div>
+        <div class="type-card">
+          <div class="type-icon">🔷</div>
+          <div class="type-name">Spatial Reasoning</div>
+          <div class="type-desc">Visualise and manipulate objects in space</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="social-proof" aria-label="Testimonials">
+      <h2>What Test-Takers Say</h2>
+      <div class="testimonials">
+        <div class="testimonial">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"Really well-designed questions. The results breakdown by category was genuinely insightful."</p>
+          <div class="testimonial-author">Sarah M., University Student</div>
+        </div>
+        <div class="testimonial">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"Clean interface, challenging questions. Much better than other free IQ tests I've tried."</p>
+          <div class="testimonial-author">James T., Software Engineer</div>
+        </div>
+        <div class="testimonial">
+          <div class="testimonial-stars">★★★★☆</div>
+          <p class="testimonial-text">"The timer kept me focused and the spatial questions were surprisingly tricky. Highly recommend."</p>
+          <div class="testimonial-author">Priya K., Data Analyst</div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <p>This test is for entertainment and self-assessment purposes. Results are not a certified clinical measurement of intelligence.</p>
+    </footer>
+
+  </section><!-- /view-landing -->
+
+
+  <!-- ════════════════ VIEW: INSTRUCTIONS ═════════════════════ -->
+  <section id="view-instructions" class="view">
+    <div class="instructions-card">
+      <h2>Before You Begin</h2>
+      <p class="sub">Read carefully — once the test starts, you cannot pause or go back.</p>
+
+      <ul class="rules-list">
+        <li>30 questions across 5 cognitive categories</li>
+        <li>20-minute time limit — the test auto-submits at 0:00</li>
+        <li>One question at a time — you cannot return to previous questions</li>
+        <li>Choose the best answer from four options for each question</li>
+        <li>Work in a quiet environment without distractions or external help</li>
+      </ul>
+
+      <div class="timer-preview">
+        <span>⏱</span>
+        <span>20:00</span>
+        <span class="timer-preview-label">Time Limit</span>
+      </div>
+
+      <div class="instructions-actions">
+        <button class="btn btn--primary btn--full btn--lg" id="btn-begin-test">
+          Begin Test
+        </button>
+        <button class="btn btn--ghost btn--full" id="btn-back-landing">
+          ← Back to Home
+        </button>
+      </div>
+    </div>
+  </section><!-- /view-instructions -->
+
+
+  <!-- ══════════════════ VIEW: TEST ════════════════════════════ -->
+  <section id="view-test" class="view">
+
+    <header class="test-header">
+      <div class="progress-wrap">
+        <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <span class="progress-label" id="progress-label">Question 1 of 30</span>
+      </div>
+      <div class="timer-display" id="timer-display" aria-live="polite" aria-label="Time remaining">20:00</div>
+    </header>
+
+    <div class="question-wrap">
+      <div class="question-card" id="question-card">
+
+        <div class="question-meta">
+          <span class="question-category" id="question-category">Number Sequences</span>
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div class="question-difficulty" id="question-difficulty">
+              <span class="diff-dot active"></span>
+              <span class="diff-dot"></span>
+              <span class="diff-dot"></span>
+            </div>
+            <span class="question-number" id="question-number">Q1</span>
+          </div>
+        </div>
+
+        <div class="question-text" id="question-text">Loading…</div>
+
+        <div class="question-visual" id="question-visual" style="display:none;"></div>
+
+        <div class="answer-options" id="answer-options"></div>
+
+      </div>
+    </div>
+
+  </section><!-- /view-test -->
+
+
+  <!-- ══════════════════ VIEW: RESULTS ════════════════════════ -->
+  <section id="view-results" class="view">
+    <div class="results-container">
+
+      <div class="score-hero">
+        <p class="score-label">Your IQ Score</p>
+        <div class="score-number" id="score-number">—</div>
+        <div class="score-classification" id="score-classification"></div>
+        <p class="score-percentile" id="score-percentile"></p>
+      </div>
+
+      <div class="score-gauge" id="score-gauge"></div>
+
+      <div class="result-summary" id="result-summary"></div>
+
+      <div class="category-breakdown">
+        <h3>Performance by Category</h3>
+        <div class="chart-bars" id="chart-bars"></div>
+      </div>
+
+      <div class="results-actions">
+        <button class="btn btn--primary" id="btn-retake">Retake Test</button>
+        <button class="btn btn--secondary" id="btn-share">Share Result</button>
+      </div>
+
+    </div>
+  </section><!-- /view-results -->
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
