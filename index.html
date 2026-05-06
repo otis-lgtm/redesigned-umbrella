@@ -150,6 +150,36 @@ body{font-family:var(--font);background:var(--bg);color:var(--t);line-height:1.6
 .share-toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(10px);background:var(--s1);border:1px solid var(--br);border-radius:var(--r12);padding:.75rem 1.5rem;font-size:.9rem;font-weight:500;box-shadow:var(--shadow);opacity:0;transition:opacity 300ms,transform 300ms;pointer-events:none;white-space:nowrap;z-index:100}
 .share-toast.visible{opacity:1;transform:translateX(-50%) translateY(0)}
 
+/* ════ PAYWALL ════ */
+#view-paywall{display:flex;align-items:flex-start;justify-content:center;padding:3rem 1.5rem 4rem;min-height:100vh;background:radial-gradient(ellipse at top,rgba(79,70,229,.1) 0%,transparent 55%)}
+.paywall-card{background:var(--s1);border:1px solid var(--br);border-radius:var(--r28);padding:2.5rem;max-width:580px;width:100%;box-shadow:var(--shadow)}
+.paywall-icon{font-size:2.5rem;text-align:center;margin-bottom:.75rem}
+.paywall-card h2{font-size:1.6rem;font-weight:800;letter-spacing:-.025em;text-align:center;margin-bottom:.5rem}
+.paywall-teaser{text-align:center;color:var(--tm);font-size:1rem;margin-bottom:2rem;line-height:1.5}
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem}
+.pricing-card{background:var(--s2);border:1.5px solid var(--br);border-radius:var(--r20);padding:1.5rem;display:flex;flex-direction:column;gap:.75rem;position:relative;transition:border-color 200ms}
+.pricing-card--featured{border-color:var(--p);background:rgba(79,70,229,.07);box-shadow:0 0 30px rgba(79,70,229,.15)}
+.pricing-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--p);color:#fff;font-size:.72rem;font-weight:700;padding:.25rem .9rem;border-radius:99px;white-space:nowrap;letter-spacing:.04em;text-transform:uppercase}
+.pricing-name{font-size:.85rem;font-weight:700;color:var(--tm);text-transform:uppercase;letter-spacing:.06em}
+.pricing-price{font-size:2rem;font-weight:900;color:var(--t);line-height:1;letter-spacing:-.03em}
+.pricing-period{font-size:1rem;font-weight:500;color:var(--tm)}
+.pricing-features{display:flex;flex-direction:column;gap:.4rem;flex:1}
+.pricing-features li{font-size:.85rem;color:var(--tm);display:flex;align-items:flex-start;gap:.4rem}
+.pricing-features li::before{content:'✓';color:var(--ok);font-weight:700;flex-shrink:0}
+.paywall-email-section{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem}
+.paywall-email-label{font-size:.85rem;font-weight:600;color:var(--tm)}
+.paywall-input{width:100%;padding:.75rem 1rem;background:var(--s2);border:1.5px solid var(--br);border-radius:var(--r12);color:var(--t);font-size:1rem;font-family:var(--font);outline:none;transition:border-color 150ms}
+.paywall-input:focus{border-color:var(--p)}
+.paywall-input::placeholder{color:var(--td)}
+.paywall-hint{font-size:.8rem;color:var(--td);line-height:1.4}
+.paywall-divider{display:flex;align-items:center;gap:.75rem;margin:.25rem 0;color:var(--td);font-size:.8rem}
+.paywall-divider::before,.paywall-divider::after{content:'';flex:1;height:1px;background:var(--br)}
+.paywall-error{color:var(--danger);font-size:.88rem;font-weight:500;padding:.6rem .9rem;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:var(--r6);margin-top:.5rem;line-height:1.4}
+.paywall-loading{position:fixed;inset:0;background:rgba(15,15,26,.9);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.25rem;z-index:200;backdrop-filter:blur(4px)}
+.paywall-spinner{width:44px;height:44px;border:3px solid var(--br);border-top-color:var(--p);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.paywall-loading-text{font-size:.95rem;color:var(--tm);font-weight:500}
+
 @media(max-width:600px){
   .landing-hero{padding:3rem 1.25rem 2.5rem}
   .stats-strip{margin-bottom:3rem}
@@ -161,6 +191,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--t);line-height:1.6
   .bar-row{grid-template-columns:110px 1fr 38px;gap:.6rem}
   .results-actions{grid-template-columns:1fr}
   .category-breakdown{padding:1.25rem}
+  .pricing-grid{grid-template-columns:1fr}
+  .paywall-card{padding:1.75rem 1.25rem}
 }
 </style>
 </head>
@@ -246,6 +278,56 @@ body{font-family:var(--font);background:var(--bg);color:var(--t);line-height:1.6
       <div class="question-visual" id="question-visual" style="display:none"></div>
       <div class="answer-options" id="answer-options"></div>
     </div>
+  </div>
+</section>
+
+<!-- ═══════════════ VIEW: PAYWALL ════════════════════════ -->
+<section id="view-paywall" class="view">
+  <div class="paywall-card">
+    <div class="paywall-icon">🔒</div>
+    <h2>Your Results Are Ready</h2>
+    <p id="paywall-teaser" class="paywall-teaser">Unlock your full IQ report to see your score, percentile, and category breakdown.</p>
+
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pricing-name">Unlock Once</div>
+        <div class="pricing-price">$4.99</div>
+        <ul class="pricing-features">
+          <li>Full IQ score</li>
+          <li>Percentile ranking</li>
+          <li>5-category breakdown</li>
+          <li>One-time payment</li>
+        </ul>
+        <button class="btn btn--secondary btn--full" id="btn-pay-once">Unlock — $4.99</button>
+      </div>
+      <div class="pricing-card pricing-card--featured">
+        <div class="pricing-badge">Best Value</div>
+        <div class="pricing-name">Unlimited Access</div>
+        <div class="pricing-price">$9.99<span class="pricing-period">/mo</span></div>
+        <ul class="pricing-features">
+          <li>Everything in one-time</li>
+          <li>Retake anytime</li>
+          <li>Track your progress</li>
+          <li>Cancel anytime</li>
+        </ul>
+        <button class="btn btn--primary btn--full" id="btn-pay-sub">Subscribe — $9.99/mo</button>
+      </div>
+    </div>
+
+    <div class="paywall-email-section">
+      <label for="paywall-email" class="paywall-email-label">Email address</label>
+      <input type="email" id="paywall-email" class="paywall-input" placeholder="you@example.com" autocomplete="email">
+      <p class="paywall-hint">Required for your receipt. Already a subscriber? Enter your email below.</p>
+      <div class="paywall-divider">or check existing access</div>
+      <button class="btn btn--ghost btn--full" id="btn-check-sub">Check Subscriber Access</button>
+    </div>
+
+    <p id="paywall-error" class="paywall-error" style="display:none"></p>
+  </div>
+
+  <div id="paywall-loading" class="paywall-loading" style="display:none">
+    <div class="paywall-spinner"></div>
+    <p id="paywall-loading-text" class="paywall-loading-text">Redirecting to secure checkout…</p>
   </div>
 </section>
 
@@ -348,7 +430,7 @@ var QUESTIONS = [
 /* ══════════════════════════════════════════════════════════
    ROUTER
 ══════════════════════════════════════════════════════════ */
-var VIEWS = ['view-landing','view-instructions','view-test','view-results'];
+var VIEWS = ['view-landing','view-instructions','view-test','view-paywall','view-results'];
 function showView(id) {
   VIEWS.forEach(function(v) {
     var el = document.getElementById(v);
@@ -659,8 +741,20 @@ function endTest() {
   var sess = getSession();
   if (!sess.completed) finalizeSession(false);
   var results = computeResults(sess);
-  showView('view-results');
-  renderResults(results);
+
+  // Fast-track returning subscribers
+  var savedEmail = localStorage.getItem('iq_subscriber_email');
+  if (savedEmail) {
+    showView('view-paywall');
+    showPaywallLoading('Checking your subscription…');
+    checkSubscriberAndRender(savedEmail, results);
+    return;
+  }
+
+  // Store results pending payment
+  try { sessionStorage.setItem('iq_pending_results', JSON.stringify(results)); } catch(e) {}
+  populatePaywallTeaser(results);
+  showView('view-paywall');
 }
 
 function retakeTest() {
@@ -684,6 +778,173 @@ function showToast(msg) {
   t.classList.add('visible');
   setTimeout(function(){ t.classList.remove('visible'); }, 3000);
 }
+
+/* ══════════════════════════════════════════════════════════
+   PAYWALL
+══════════════════════════════════════════════════════════ */
+document.getElementById('btn-pay-once').onclick  = function(){ initiateCheckout('once'); };
+document.getElementById('btn-pay-sub').onclick   = function(){ initiateCheckout('sub'); };
+document.getElementById('btn-check-sub').onclick = function(){ checkSubscriberAccess(); };
+
+function getPaywallEmail() {
+  return (document.getElementById('paywall-email').value || '').trim().toLowerCase();
+}
+function validateEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+
+function showPaywallError(msg) {
+  var el = document.getElementById('paywall-error');
+  el.textContent = msg; el.style.display = 'block';
+}
+function clearPaywallError() {
+  var el = document.getElementById('paywall-error');
+  el.textContent = ''; el.style.display = 'none';
+}
+function showPaywallLoading(msg) {
+  document.getElementById('paywall-loading-text').textContent = msg || 'Loading…';
+  document.getElementById('paywall-loading').style.display = 'flex';
+}
+function hidePaywallLoading() {
+  document.getElementById('paywall-loading').style.display = 'none';
+}
+
+function populatePaywallTeaser(results) {
+  var pct = results.percentile;
+  var text = pct >= 75 ? "You're in the top quarter of test takers."
+           : pct >= 50 ? "You scored above the average test taker."
+           : pct >= 25 ? "You're in the middle range of test takers."
+           : "Your full results are ready — unlock your report below.";
+  document.getElementById('paywall-teaser').textContent = text;
+  clearPaywallError();
+  hidePaywallLoading();
+}
+
+function initiateCheckout(tier) {
+  var email = getPaywallEmail();
+  if (!validateEmail(email)) {
+    showPaywallError('Please enter a valid email address first.');
+    document.getElementById('paywall-email').focus();
+    return;
+  }
+  clearPaywallError();
+  showPaywallLoading('Redirecting to secure checkout…');
+
+  fetch('/api/create-checkout', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: email, tier: tier })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data){
+    if (data.url) { window.location.href = data.url; }
+    else { hidePaywallLoading(); showPaywallError(data.error || 'Something went wrong. Please try again.'); }
+  })
+  .catch(function(){
+    hidePaywallLoading();
+    showPaywallError('Network error. Please check your connection and try again.');
+  });
+}
+
+function checkSubscriberAccess() {
+  var email = getPaywallEmail();
+  if (!validateEmail(email)) {
+    showPaywallError('Please enter your email address to check access.');
+    document.getElementById('paywall-email').focus();
+    return;
+  }
+  clearPaywallError();
+  showPaywallLoading('Checking your subscription…');
+
+  fetch('/api/check-subscriber?email=' + encodeURIComponent(email))
+  .then(function(r){ return r.json(); })
+  .then(function(data){
+    if (data.active) { unlockAndRender(data.unlockToken, email, 'subscription', null); }
+    else {
+      hidePaywallLoading();
+      showPaywallError('No active subscription found for that email. Please choose a plan below.');
+    }
+  })
+  .catch(function(){
+    hidePaywallLoading();
+    showPaywallError('Network error. Please try again.');
+  });
+}
+
+function checkSubscriberAndRender(email, results) {
+  fetch('/api/check-subscriber?email=' + encodeURIComponent(email))
+  .then(function(r){ return r.json(); })
+  .then(function(data){
+    if (data.active) {
+      unlockAndRender(data.unlockToken, email, 'subscription', results);
+    } else {
+      localStorage.removeItem('iq_subscriber_email');
+      try { sessionStorage.setItem('iq_pending_results', JSON.stringify(results)); } catch(e) {}
+      populatePaywallTeaser(results);
+      showPaywallError('Your subscription is no longer active. Please choose a plan to continue.');
+    }
+  })
+  .catch(function(){
+    try { sessionStorage.setItem('iq_pending_results', JSON.stringify(results)); } catch(e) {}
+    populatePaywallTeaser(results);
+  });
+}
+
+function unlockAndRender(unlockToken, email, type, results) {
+  if (type === 'subscription') {
+    try { localStorage.setItem('iq_subscriber_email', email); } catch(e) {}
+  }
+  var pending = results;
+  if (!pending) {
+    try {
+      var raw = sessionStorage.getItem('iq_pending_results');
+      pending = raw ? JSON.parse(raw) : null;
+    } catch(e) {}
+  }
+  if (!pending) {
+    hidePaywallLoading();
+    showView('view-paywall');
+    showPaywallError("Payment confirmed! Please retake the test — you'll have instant access this time.");
+    return;
+  }
+  try { sessionStorage.removeItem('iq_pending_results'); } catch(e) {}
+  hidePaywallLoading();
+  showView('view-results');
+  renderResults(pending);
+}
+
+// Handle Stripe redirect on page load
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var sessionId = params.get('session_id');
+  var cancelled  = params.get('cancelled');
+
+  if (sessionId) {
+    history.replaceState({}, '', '/');
+    showView('view-paywall');
+    showPaywallLoading('Verifying payment…');
+
+    fetch('/api/verify-session?session_id=' + encodeURIComponent(sessionId))
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (data.unlockToken) { unlockAndRender(data.unlockToken, data.email, data.type, null); }
+      else { hidePaywallLoading(); showPaywallError(data.error || 'Could not verify payment. Please contact support.'); }
+    })
+    .catch(function(){
+      hidePaywallLoading();
+      showPaywallError('Network error while verifying payment. Contact support if you were charged.');
+    });
+    return;
+  }
+
+  if (cancelled) {
+    history.replaceState({}, '', '/');
+    showView('view-paywall');
+    try {
+      var raw = sessionStorage.getItem('iq_pending_results');
+      if (raw) populatePaywallTeaser(JSON.parse(raw));
+    } catch(e) {}
+    showPaywallError('Payment was cancelled. You can try again below.');
+  }
+})();
 </script>
 </body>
 </html>
