@@ -1,215 +1,689 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IQ Test — Measure Your Intelligence</title>
-  <meta name="description" content="Take our free IQ test. 30 scientifically-designed questions across 5 cognitive categories. Get your IQ score and percentile ranking instantly.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IQ Test — Measure Your Intelligence</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
 
-  <link rel="stylesheet" href="css/reset.css">
-  <link rel="stylesheet" href="css/variables.css">
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/landing.css">
-  <link rel="stylesheet" href="css/instructions.css">
-  <link rel="stylesheet" href="css/test.css">
-  <link rel="stylesheet" href="css/results.css">
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+ul,ol{list-style:none}
+img,svg{display:block;max-width:100%}
+button{cursor:pointer;border:none;background:none;font:inherit}
+a{text-decoration:none;color:inherit}
+table{border-collapse:collapse}
+
+:root{
+  --p:#4f46e5;--pd:#3730a3;--pl:#818cf8;
+  --ac:#06b6d4;--danger:#ef4444;--warn:#f59e0b;--ok:#10b981;
+  --bg:#0f0f1a;--s1:#1a1a2e;--s2:#16213e;
+  --br:#2d3748;--br2:#4a5568;
+  --t:#e2e8f0;--tm:#94a3b8;--td:#64748b;
+  --font:'Inter',system-ui,sans-serif;
+  --r6:6px;--r12:12px;--r20:20px;--r28:28px;
+  --shadow:0 4px 24px rgba(0,0,0,.5);
+}
+
+body{font-family:var(--font);background:var(--bg);color:var(--t);line-height:1.6;-webkit-font-smoothing:antialiased}
+
+.view{display:none;min-height:100vh}
+.view--active{display:block}
+
+/* ── Buttons ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.75rem 1.75rem;border-radius:var(--r12);font-size:1rem;font-weight:600;letter-spacing:.01em;transition:background 150ms,transform 150ms,box-shadow 150ms}
+.btn:active{transform:scale(.97)}
+.btn--primary{background:var(--p);color:#fff;box-shadow:0 4px 14px rgba(79,70,229,.4)}
+.btn--primary:hover{background:var(--pd)}
+.btn--secondary{background:var(--s2);color:var(--t);border:1px solid var(--br)}
+.btn--secondary:hover{border-color:var(--p)}
+.btn--ghost{background:transparent;color:var(--tm);border:1px solid var(--br)}
+.btn--ghost:hover{color:var(--t)}
+.btn--lg{padding:1rem 2.5rem;font-size:1.125rem;border-radius:var(--r20)}
+.btn--full{width:100%}
+
+/* ════ LANDING ════ */
+.site-header{display:flex;align-items:center;padding:1.25rem 2rem;max-width:1100px;margin:0 auto}
+.logo{font-size:1.5rem;font-weight:900;background:linear-gradient(135deg,var(--pl),var(--ac));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.02em}
+.landing-hero{text-align:center;padding:5rem 1.5rem 4rem;max-width:680px;margin:0 auto}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(79,70,229,.15);border:1px solid rgba(79,70,229,.3);color:var(--pl);padding:.35rem 1rem;border-radius:99px;font-size:.85rem;font-weight:600;margin-bottom:1.5rem;letter-spacing:.04em;text-transform:uppercase}
+.landing-hero h1{font-size:clamp(2.4rem,6vw,3.8rem);font-weight:900;line-height:1.1;letter-spacing:-.03em;margin-bottom:1.25rem;background:linear-gradient(135deg,#e2e8f0 30%,var(--pl));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:1.15rem;color:var(--tm);margin-bottom:2.5rem;line-height:1.7}
+.stats-strip{display:flex;justify-content:center;max-width:500px;margin:0 auto 5rem;border:1px solid var(--br);border-radius:var(--r20);background:var(--s1);overflow:hidden}
+.stat{flex:1;display:flex;flex-direction:column;align-items:center;padding:1.5rem 1rem;border-right:1px solid var(--br)}
+.stat:last-child{border-right:none}
+.stat-num{font-size:2rem;font-weight:900;color:var(--pl);line-height:1;margin-bottom:.35rem}
+.stat-label{font-size:.8rem;font-weight:500;color:var(--tm);text-transform:uppercase;letter-spacing:.06em}
+.question-types{max-width:680px;margin:0 auto 5rem;padding:0 1.5rem;text-align:center}
+.question-types h2{font-size:1.5rem;font-weight:700;margin-bottom:.5rem;letter-spacing:-.02em}
+.section-sub{color:var(--tm);margin-bottom:2rem;font-size:.95rem}
+.type-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem}
+.type-card{background:var(--s1);border:1px solid var(--br);border-radius:var(--r12);padding:1.25rem 1rem;text-align:center;transition:border-color 150ms,transform 150ms}
+.type-card:hover{border-color:var(--p);transform:translateY(-2px)}
+.type-icon{font-size:2rem;margin-bottom:.6rem}
+.type-name{font-weight:600;font-size:.9rem;margin-bottom:.25rem}
+.type-desc{font-size:.8rem;color:var(--tm);line-height:1.4}
+.social-proof{max-width:680px;margin:0 auto 5rem;padding:0 1.5rem;text-align:center}
+.social-proof h2{font-size:1.5rem;font-weight:700;margin-bottom:1.5rem;letter-spacing:-.02em}
+.testimonials{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}
+.testimonial{background:var(--s1);border:1px solid var(--br);border-radius:var(--r12);padding:1.25rem;text-align:left}
+.testimonial-stars{color:#f59e0b;font-size:.85rem;margin-bottom:.6rem;letter-spacing:2px}
+.testimonial-text{font-size:.88rem;color:var(--tm);line-height:1.5;margin-bottom:.75rem;font-style:italic}
+.testimonial-author{font-size:.8rem;font-weight:600}
+.site-footer{text-align:center;padding:2rem 1.5rem;color:var(--td);font-size:.82rem;border-top:1px solid var(--br)}
+
+/* ════ INSTRUCTIONS ════ */
+#view-instructions{display:flex;align-items:center;justify-content:center;padding:2rem 1.5rem;background:radial-gradient(ellipse at top,rgba(79,70,229,.08) 0%,transparent 60%)}
+.instructions-card{background:var(--s1);border:1px solid var(--br);border-radius:var(--r28);padding:2.5rem;max-width:540px;width:100%;box-shadow:var(--shadow)}
+.instructions-card h2{font-size:1.75rem;font-weight:800;letter-spacing:-.025em;margin-bottom:.4rem}
+.instructions-card .sub{color:var(--tm);font-size:.95rem;margin-bottom:2rem}
+.rules-list{margin-bottom:2rem;display:flex;flex-direction:column;gap:.75rem}
+.rules-list li{display:flex;align-items:flex-start;gap:.75rem;font-size:.95rem;color:var(--tm);line-height:1.5}
+.rules-list li::before{content:'✓';flex-shrink:0;width:22px;height:22px;border-radius:50%;background:rgba(79,70,229,.2);border:1px solid var(--p);color:var(--pl);font-size:.7rem;font-weight:900;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.timer-preview{display:flex;align-items:center;justify-content:center;gap:.75rem;background:var(--s2);border:1px solid var(--br);border-radius:var(--r12);padding:1rem;margin-bottom:1.75rem;font-size:2rem;font-weight:800;color:var(--pl);font-variant-numeric:tabular-nums;letter-spacing:.05em}
+.timer-preview-label{font-size:.8rem;color:var(--tm);font-weight:500;text-transform:uppercase;letter-spacing:.08em}
+.instructions-actions{display:flex;flex-direction:column;gap:.75rem}
+
+/* ════ TEST ════ */
+#view-test{display:flex;flex-direction:column;min-height:100vh;background:radial-gradient(ellipse at top,rgba(79,70,229,.06) 0%,transparent 50%)}
+.test-header{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;padding:1rem 1.5rem;border-bottom:1px solid var(--br);background:rgba(26,26,46,.9);backdrop-filter:blur(8px);position:sticky;top:0;z-index:10}
+.progress-wrap{flex:1;display:flex;align-items:center;gap:1rem;min-width:0}
+.progress-bar{flex:1;height:6px;background:var(--br);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--ac));border-radius:99px;transition:width 400ms cubic-bezier(.4,0,.2,1);width:0%}
+.progress-label{font-size:.82rem;font-weight:600;color:var(--tm);white-space:nowrap}
+.timer-display{font-size:1.35rem;font-weight:800;font-variant-numeric:tabular-nums;color:var(--t);letter-spacing:.02em;min-width:5ch;text-align:right;transition:color 150ms}
+.timer-display.warning{color:var(--warn)}
+.timer-display.danger{color:var(--danger)}
+.timer-display.flash{animation:tflash .8s ease-in-out infinite}
+@keyframes tflash{0%,100%{opacity:1}50%{opacity:.25}}
+.question-wrap{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:2.5rem 1.5rem}
+.question-card{background:var(--s1);border:1px solid var(--br);border-radius:var(--r28);padding:2rem 2rem 1.5rem;max-width:600px;width:100%;box-shadow:var(--shadow);transition:opacity 200ms ease,transform 200ms ease}
+.question-card.exiting{opacity:0;transform:translateX(-24px)}
+.question-card.entering{opacity:0;transform:translateX(24px)}
+.question-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+.question-category{display:inline-flex;align-items:center;gap:.4rem;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--pl);background:rgba(79,70,229,.12);padding:.3rem .75rem;border-radius:99px;border:1px solid rgba(79,70,229,.25)}
+.question-number{font-size:.8rem;font-weight:600;color:var(--td)}
+.question-difficulty{display:flex;gap:3px}
+.diff-dot{width:7px;height:7px;border-radius:50%;background:var(--br)}
+.diff-dot.active{background:var(--pl)}
+.question-text{font-size:1.15rem;font-weight:500;line-height:1.65;margin-bottom:1.5rem;color:var(--t);white-space:pre-line}
+.question-visual{margin-bottom:1.5rem}
+.matrix-table{margin:0 auto;border-radius:var(--r12);overflow:hidden;background:var(--s2);border:1px solid var(--br)}
+.matrix-table td{width:72px;height:72px;text-align:center;vertical-align:middle;font-size:1.6rem;border:1px solid var(--br);padding:.25rem;line-height:1}
+.matrix-table td.matrix-q{background:rgba(79,70,229,.12);border-color:var(--p);font-size:1.8rem;font-weight:900;color:var(--pl)}
+.answer-options{display:flex;flex-direction:column;gap:.6rem}
+.answer-option{display:block;width:100%;text-align:left;padding:.9rem 1.2rem .9rem 3rem;background:var(--s2);border:1.5px solid var(--br);border-radius:var(--r12);font-size:1rem;color:var(--t);font-weight:500;transition:border-color 150ms,background 150ms,transform 150ms;position:relative}
+.answer-option::before{content:attr(data-letter);position:absolute;left:1rem;top:50%;transform:translateY(-50%);width:24px;height:24px;border-radius:50%;background:var(--br);color:var(--tm);font-size:.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;line-height:24px;text-align:center;transition:background 150ms,color 150ms}
+.answer-option:hover:not(:disabled){border-color:var(--p);background:rgba(79,70,229,.06);transform:translateX(2px)}
+.answer-option:hover:not(:disabled)::before{background:rgba(79,70,229,.3);color:var(--pl)}
+.answer-option.selected{border-color:var(--p);background:rgba(79,70,229,.12)}
+.answer-option.selected::before{background:var(--p);color:#fff}
+.answer-option:disabled{cursor:not-allowed}
+
+/* ════ RESULTS ════ */
+#view-results{padding:3rem 1.5rem 4rem;background:radial-gradient(ellipse at top,rgba(79,70,229,.1) 0%,transparent 55%)}
+.results-container{max-width:600px;margin:0 auto;display:flex;flex-direction:column;gap:1.75rem}
+.score-hero{text-align:center}
+.score-label{font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--tm);margin-bottom:.5rem}
+.score-number{font-size:clamp(5rem,18vw,8rem);font-weight:900;line-height:1;letter-spacing:-.04em;margin-bottom:.75rem;transition:color .5s ease}
+.score-classification{display:inline-block;font-size:1rem;font-weight:700;padding:.35rem 1.25rem;border-radius:99px;margin-bottom:.75rem;letter-spacing:.02em}
+.score-percentile{font-size:1.05rem;color:var(--tm);line-height:1.5}
+.score-gauge{display:flex;justify-content:center}
+.gauge-svg{width:100%;max-width:320px;height:auto;overflow:visible}
+.gauge-track{fill:none;stroke:var(--br);stroke-width:14;stroke-linecap:round}
+.gauge-fill{fill:none;stroke-width:14;stroke-linecap:round;stroke-dasharray:0 283;transition:stroke-dasharray 1.4s cubic-bezier(.2,0,.2,1)}
+.gauge-label-iq{fill:var(--tm);font-family:var(--font);font-size:12px;font-weight:600}
+.gauge-scale-min,.gauge-scale-max{fill:var(--td);font-family:var(--font);font-size:11px}
+.category-breakdown{background:var(--s1);border:1px solid var(--br);border-radius:var(--r28);padding:1.75rem}
+.category-breakdown h3{font-size:1rem;font-weight:700;margin-bottom:1.5rem;letter-spacing:-.01em}
+.chart-bars{display:flex;flex-direction:column;gap:1rem}
+.bar-row{display:grid;grid-template-columns:150px 1fr 42px;align-items:center;gap:.875rem}
+.bar-label{font-size:.82rem;font-weight:600;color:var(--tm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{height:10px;background:var(--br);border-radius:99px;overflow:hidden}
+.bar-fill{height:100%;border-radius:99px;width:0%;transition:width 1.1s cubic-bezier(.2,0,.2,1)}
+.bar-pct{font-size:.82rem;font-weight:700;color:var(--tm);text-align:right}
+.result-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+.summary-stat{background:var(--s1);border:1px solid var(--br);border-radius:var(--r12);padding:1rem;text-align:center}
+.summary-stat-num{font-size:1.6rem;font-weight:800;line-height:1;margin-bottom:.3rem}
+.summary-stat-label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--td)}
+.results-actions{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.share-toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(10px);background:var(--s1);border:1px solid var(--br);border-radius:var(--r12);padding:.75rem 1.5rem;font-size:.9rem;font-weight:500;box-shadow:var(--shadow);opacity:0;transition:opacity 300ms,transform 300ms;pointer-events:none;white-space:nowrap;z-index:100}
+.share-toast.visible{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(max-width:600px){
+  .landing-hero{padding:3rem 1.25rem 2.5rem}
+  .stats-strip{margin-bottom:3rem}
+  .instructions-card{padding:1.75rem 1.25rem}
+  .question-wrap{padding:1.25rem 1rem}
+  .question-card{padding:1.5rem 1.25rem 1.25rem}
+  .test-header{padding:.75rem 1rem}
+  .matrix-table td{width:56px;height:56px;font-size:1.3rem}
+  .bar-row{grid-template-columns:110px 1fr 38px;gap:.6rem}
+  .results-actions{grid-template-columns:1fr}
+  .category-breakdown{padding:1.25rem}
+}
+</style>
 </head>
 <body>
 
-  <!-- ═══════════════════ VIEW: LANDING ════════════════════════ -->
-  <section id="view-landing" class="view view--active">
-
-    <header class="site-header">
-      <div class="logo">IQ Test</div>
-    </header>
-
-    <main class="landing-hero">
-      <div class="hero-badge">Free &amp; Instant Results</div>
-      <h1>Discover Your IQ Score</h1>
-      <p class="hero-sub">
-        30 scientifically-designed questions across 5 cognitive categories.
-        Complete the test in under 20 minutes and get your score instantly.
-      </p>
-      <button class="btn btn--primary btn--lg" id="btn-start-landing">
-        Start Free IQ Test
-      </button>
-    </main>
-
-    <section class="stats-strip" aria-label="Test statistics">
-      <div class="stat">
-        <span class="stat-num">30</span>
-        <span class="stat-label">Questions</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num">20</span>
-        <span class="stat-label">Minutes</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num">5</span>
-        <span class="stat-label">Categories</span>
-      </div>
-    </section>
-
-    <section class="question-types" aria-label="Question categories">
-      <h2>What We Measure</h2>
-      <p class="section-sub">A well-rounded assessment of your cognitive abilities</p>
-      <div class="type-grid">
-        <div class="type-card">
-          <div class="type-icon">🔢</div>
-          <div class="type-name">Number Sequences</div>
-          <div class="type-desc">Identify patterns in numerical progressions</div>
-        </div>
-        <div class="type-card">
-          <div class="type-icon">🔲</div>
-          <div class="type-name">Pattern Matrices</div>
-          <div class="type-desc">Complete visual and numerical matrix patterns</div>
-        </div>
-        <div class="type-card">
-          <div class="type-icon">🔤</div>
-          <div class="type-name">Verbal Analogies</div>
-          <div class="type-desc">Understand relationships between concepts</div>
-        </div>
-        <div class="type-card">
-          <div class="type-icon">🧩</div>
-          <div class="type-name">Logical Reasoning</div>
-          <div class="type-desc">Deductive and inductive reasoning challenges</div>
-        </div>
-        <div class="type-card">
-          <div class="type-icon">🔷</div>
-          <div class="type-name">Spatial Reasoning</div>
-          <div class="type-desc">Visualise and manipulate objects in space</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="social-proof" aria-label="Testimonials">
-      <h2>What Test-Takers Say</h2>
-      <div class="testimonials">
-        <div class="testimonial">
-          <div class="testimonial-stars">★★★★★</div>
-          <p class="testimonial-text">"Really well-designed questions. The results breakdown by category was genuinely insightful."</p>
-          <div class="testimonial-author">Sarah M., University Student</div>
-        </div>
-        <div class="testimonial">
-          <div class="testimonial-stars">★★★★★</div>
-          <p class="testimonial-text">"Clean interface, challenging questions. Much better than other free IQ tests I've tried."</p>
-          <div class="testimonial-author">James T., Software Engineer</div>
-        </div>
-        <div class="testimonial">
-          <div class="testimonial-stars">★★★★☆</div>
-          <p class="testimonial-text">"The timer kept me focused and the spatial questions were surprisingly tricky. Highly recommend."</p>
-          <div class="testimonial-author">Priya K., Data Analyst</div>
-        </div>
-      </div>
-    </section>
-
-    <footer class="site-footer">
-      <p>This test is for entertainment and self-assessment purposes. Results are not a certified clinical measurement of intelligence.</p>
-    </footer>
-
-  </section><!-- /view-landing -->
-
-
-  <!-- ════════════════ VIEW: INSTRUCTIONS ═════════════════════ -->
-  <section id="view-instructions" class="view">
-    <div class="instructions-card">
-      <h2>Before You Begin</h2>
-      <p class="sub">Read carefully — once the test starts, you cannot pause or go back.</p>
-
-      <ul class="rules-list">
-        <li>30 questions across 5 cognitive categories</li>
-        <li>20-minute time limit — the test auto-submits at 0:00</li>
-        <li>One question at a time — you cannot return to previous questions</li>
-        <li>Choose the best answer from four options for each question</li>
-        <li>Work in a quiet environment without distractions or external help</li>
-      </ul>
-
-      <div class="timer-preview">
-        <span>⏱</span>
-        <span>20:00</span>
-        <span class="timer-preview-label">Time Limit</span>
-      </div>
-
-      <div class="instructions-actions">
-        <button class="btn btn--primary btn--full btn--lg" id="btn-begin-test">
-          Begin Test
-        </button>
-        <button class="btn btn--ghost btn--full" id="btn-back-landing">
-          ← Back to Home
-        </button>
-      </div>
+<!-- ═══════════════ VIEW: LANDING ════════════════════════ -->
+<section id="view-landing" class="view view--active">
+  <header class="site-header">
+    <div class="logo">IQ Test</div>
+  </header>
+  <main class="landing-hero">
+    <div class="hero-badge">Free &amp; Instant Results</div>
+    <h1>Discover Your IQ Score</h1>
+    <p class="hero-sub">30 scientifically-designed questions across 5 cognitive categories. Complete in under 20 minutes and get your score instantly.</p>
+    <button class="btn btn--primary btn--lg" id="btn-start-landing">Start Free IQ Test</button>
+  </main>
+  <section class="stats-strip">
+    <div class="stat"><span class="stat-num">30</span><span class="stat-label">Questions</span></div>
+    <div class="stat"><span class="stat-num">20</span><span class="stat-label">Minutes</span></div>
+    <div class="stat"><span class="stat-num">5</span><span class="stat-label">Categories</span></div>
+  </section>
+  <section class="question-types">
+    <h2>What We Measure</h2>
+    <p class="section-sub">A well-rounded assessment of your cognitive abilities</p>
+    <div class="type-grid">
+      <div class="type-card"><div class="type-icon">🔢</div><div class="type-name">Number Sequences</div><div class="type-desc">Identify patterns in numerical progressions</div></div>
+      <div class="type-card"><div class="type-icon">🔲</div><div class="type-name">Pattern Matrices</div><div class="type-desc">Complete visual and numerical matrix patterns</div></div>
+      <div class="type-card"><div class="type-icon">🔤</div><div class="type-name">Verbal Analogies</div><div class="type-desc">Understand relationships between concepts</div></div>
+      <div class="type-card"><div class="type-icon">🧩</div><div class="type-name">Logical Reasoning</div><div class="type-desc">Deductive and inductive reasoning challenges</div></div>
+      <div class="type-card"><div class="type-icon">🔷</div><div class="type-name">Spatial Reasoning</div><div class="type-desc">Visualise and manipulate objects in space</div></div>
     </div>
-  </section><!-- /view-instructions -->
-
-
-  <!-- ══════════════════ VIEW: TEST ════════════════════════════ -->
-  <section id="view-test" class="view">
-
-    <header class="test-header">
-      <div class="progress-wrap">
-        <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-          <div class="progress-fill" id="progress-fill"></div>
-        </div>
-        <span class="progress-label" id="progress-label">Question 1 of 30</span>
-      </div>
-      <div class="timer-display" id="timer-display" aria-live="polite" aria-label="Time remaining">20:00</div>
-    </header>
-
-    <div class="question-wrap">
-      <div class="question-card" id="question-card">
-
-        <div class="question-meta">
-          <span class="question-category" id="question-category">Number Sequences</span>
-          <div style="display:flex; align-items:center; gap:0.75rem;">
-            <div class="question-difficulty" id="question-difficulty">
-              <span class="diff-dot active"></span>
-              <span class="diff-dot"></span>
-              <span class="diff-dot"></span>
-            </div>
-            <span class="question-number" id="question-number">Q1</span>
-          </div>
-        </div>
-
-        <div class="question-text" id="question-text">Loading…</div>
-
-        <div class="question-visual" id="question-visual" style="display:none;"></div>
-
-        <div class="answer-options" id="answer-options"></div>
-
-      </div>
+  </section>
+  <section class="social-proof">
+    <h2>What Test-Takers Say</h2>
+    <div class="testimonials">
+      <div class="testimonial"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text">"Really well-designed questions. The category breakdown was genuinely insightful."</p><div class="testimonial-author">Sarah M., University Student</div></div>
+      <div class="testimonial"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text">"Clean interface, challenging questions. Much better than other free IQ tests I've tried."</p><div class="testimonial-author">James T., Software Engineer</div></div>
+      <div class="testimonial"><div class="testimonial-stars">★★★★☆</div><p class="testimonial-text">"The timer kept me focused and the spatial questions were surprisingly tricky."</p><div class="testimonial-author">Priya K., Data Analyst</div></div>
     </div>
+  </section>
+  <footer class="site-footer"><p>For entertainment and self-assessment purposes. Not a certified clinical measurement of intelligence.</p></footer>
+</section>
 
-  </section><!-- /view-test -->
-
-
-  <!-- ══════════════════ VIEW: RESULTS ════════════════════════ -->
-  <section id="view-results" class="view">
-    <div class="results-container">
-
-      <div class="score-hero">
-        <p class="score-label">Your IQ Score</p>
-        <div class="score-number" id="score-number">—</div>
-        <div class="score-classification" id="score-classification"></div>
-        <p class="score-percentile" id="score-percentile"></p>
-      </div>
-
-      <div class="score-gauge" id="score-gauge"></div>
-
-      <div class="result-summary" id="result-summary"></div>
-
-      <div class="category-breakdown">
-        <h3>Performance by Category</h3>
-        <div class="chart-bars" id="chart-bars"></div>
-      </div>
-
-      <div class="results-actions">
-        <button class="btn btn--primary" id="btn-retake">Retake Test</button>
-        <button class="btn btn--secondary" id="btn-share">Share Result</button>
-      </div>
-
+<!-- ═══════════════ VIEW: INSTRUCTIONS ═══════════════════ -->
+<section id="view-instructions" class="view">
+  <div class="instructions-card">
+    <h2>Before You Begin</h2>
+    <p class="sub">Once the test starts you cannot pause or go back.</p>
+    <ul class="rules-list">
+      <li>30 questions across 5 cognitive categories</li>
+      <li>20-minute time limit — auto-submits at 0:00</li>
+      <li>One question at a time — you cannot return to previous questions</li>
+      <li>Choose the best answer from four options</li>
+      <li>Work without external help or distractions</li>
+    </ul>
+    <div class="timer-preview"><span>⏱</span><span>20:00</span><span class="timer-preview-label">Time Limit</span></div>
+    <div class="instructions-actions">
+      <button class="btn btn--primary btn--full btn--lg" id="btn-begin-test">Begin Test</button>
+      <button class="btn btn--ghost btn--full" id="btn-back-landing">← Back to Home</button>
     </div>
-  </section><!-- /view-results -->
+  </div>
+</section>
 
-  <script type="module" src="js/main.js"></script>
+<!-- ═══════════════ VIEW: TEST ════════════════════════════ -->
+<section id="view-test" class="view">
+  <header class="test-header">
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      <span class="progress-label" id="progress-label">Question 1 of 30</span>
+    </div>
+    <div class="timer-display" id="timer-display">20:00</div>
+  </header>
+  <div class="question-wrap">
+    <div class="question-card" id="question-card">
+      <div class="question-meta">
+        <span class="question-category" id="question-category"></span>
+        <div style="display:flex;align-items:center;gap:.75rem">
+          <div class="question-difficulty" id="question-difficulty"></div>
+          <span class="question-number" id="question-number"></span>
+        </div>
+      </div>
+      <div class="question-text" id="question-text"></div>
+      <div class="question-visual" id="question-visual" style="display:none"></div>
+      <div class="answer-options" id="answer-options"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ VIEW: RESULTS ════════════════════════ -->
+<section id="view-results" class="view">
+  <div class="results-container">
+    <div class="score-hero">
+      <p class="score-label">Your IQ Score</p>
+      <div class="score-number" id="score-number">—</div>
+      <div class="score-classification" id="score-classification"></div>
+      <p class="score-percentile" id="score-percentile"></p>
+    </div>
+    <div class="score-gauge" id="score-gauge"></div>
+    <div class="result-summary" id="result-summary"></div>
+    <div class="category-breakdown">
+      <h3>Performance by Category</h3>
+      <div class="chart-bars" id="chart-bars"></div>
+    </div>
+    <div class="results-actions">
+      <button class="btn btn--primary" id="btn-retake">Retake Test</button>
+      <button class="btn btn--secondary" id="btn-share">Share Result</button>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   DATA
+══════════════════════════════════════════════════════════ */
+var CATEGORY_LABELS = {
+  number_sequence: 'Number Sequences',
+  pattern_matrix:  'Pattern Matrices',
+  verbal_analogy:  'Verbal Analogies',
+  logical:         'Logical Reasoning',
+  spatial:         'Spatial Reasoning'
+};
+
+function mx(rows) {
+  var trs = rows.map(function(cells) {
+    var tds = cells.map(function(c) {
+      return '<td' + (c.q ? ' class="matrix-q"' : '') + '>' + c.v + '</td>';
+    }).join('');
+    return '<tr>' + tds + '</tr>';
+  }).join('');
+  return '<table class="matrix-table">' + trs + '</table>';
+}
+var q = {v:'?',q:true}, c = function(v){return {v:v}};
+
+var QUESTIONS = [
+  // NUMBER SEQUENCES
+  {id:1,  category:'number_sequence', difficulty:1, question:'What number comes next?\n\n2,  4,  8,  16,  ___',      visual:null, options:['20','24','28','32'],                                                   correct:3},
+  {id:2,  category:'number_sequence', difficulty:1, question:'What number comes next?\n\n1,  1,  2,  3,  5,  8,  ___', visual:null, options:['10','11','12','13'],                                                  correct:3},
+  {id:3,  category:'number_sequence', difficulty:2, question:'What number comes next?\n\n81,  27,  9,  3,  ___',      visual:null, options:['0','1','2','3'],                                                       correct:1},
+  {id:4,  category:'number_sequence', difficulty:2, question:'What number comes next?\n\n1,  4,  9,  16,  25,  ___',  visual:null, options:['30','32','35','36'],                                                   correct:3},
+  {id:5,  category:'number_sequence', difficulty:3, question:'What number comes next?\n\n2,  6,  12,  20,  30,  ___', visual:null, options:['38','40','42','44'],                                                   correct:2},
+  {id:6,  category:'number_sequence', difficulty:3, question:'What number comes next?\n\n3,  5,  9,  15,  23,  ___',  visual:null, options:['29','31','33','35'],                                                   correct:2},
+  // PATTERN MATRICES
+  {id:7,  category:'pattern_matrix',  difficulty:1, question:'Which symbol completes the pattern?',
+   visual:mx([[c('●'),c('■'),c('▲')],[c('■'),c('▲'),c('●')],[c('▲'),c('●'),q]]),
+   options:['●','▲','■','◆'], correct:2},
+  {id:8,  category:'pattern_matrix',  difficulty:1, question:'Which option completes the pattern?',
+   visual:mx([[c('●'),c('● ●'),c('● ● ●')],[c('■'),c('■ ■'),c('■ ■ ■')],[c('▲'),c('▲ ▲'),q]]),
+   options:['▲','▲ ▲','▲ ▲ ▲','▲ ▲ ▲ ▲'], correct:2},
+  {id:9,  category:'pattern_matrix',  difficulty:2, question:'What value replaces the question mark?',
+   visual:mx([[c('2'),c('4'),c('8')],[c('3'),c('9'),c('27')],[c('4'),c('16'),q]]),
+   options:['48','56','64','72'], correct:2},
+  {id:10, category:'pattern_matrix',  difficulty:2, question:'What value replaces the question mark?',
+   visual:mx([[c('5'),c('10'),c('20')],[c('7'),c('14'),c('28')],[c('9'),c('18'),q]]),
+   options:['34','36','38','40'], correct:1},
+  {id:11, category:'pattern_matrix',  difficulty:3, question:'What value replaces the question mark?\n(Hint: look at the numbers carefully)',
+   visual:mx([[c('2'),c('3'),c('5')],[c('7'),c('11'),c('13')],[c('17'),c('19'),q]]),
+   options:['21','22','23','24'], correct:2},
+  {id:12, category:'pattern_matrix',  difficulty:3, question:'What value replaces the question mark?',
+   visual:mx([[c('1'),c('2'),c('4')],[c('3'),c('6'),c('12')],[c('5'),c('10'),q]]),
+   options:['15','18','20','25'], correct:2},
+  // VERBAL ANALOGIES
+  {id:13, category:'verbal_analogy',  difficulty:1, question:'Hot is to Cold\nas\nDay is to ___',                       visual:null, options:['Dawn','Night','Sun','Dusk'],                          correct:1},
+  {id:14, category:'verbal_analogy',  difficulty:1, question:'Book is to Library\nas\nPainting is to ___',               visual:null, options:['Canvas','Artist','Museum','Gallery'],               correct:2},
+  {id:15, category:'verbal_analogy',  difficulty:2, question:'Physician is to Patient\nas\nLawyer is to ___',             visual:null, options:['Judge','Client','Jury','Defendant'],                correct:1},
+  {id:16, category:'verbal_analogy',  difficulty:2, question:'Ignorance is to Education\nas\nDisease is to ___',          visual:null, options:['Hospital','Illness','Medicine','Doctor'],           correct:2},
+  {id:17, category:'verbal_analogy',  difficulty:3, question:'Archipelago is to Island\nas\nConstellation is to ___',     visual:null, options:['Galaxy','Planet','Star','Universe'],               correct:2},
+  {id:18, category:'verbal_analogy',  difficulty:3, question:'Sycophant is to Flatter\nas\nIconoclast is to ___',         visual:null, options:['Worship','Protest','Challenge traditions','Create art'], correct:2},
+  // LOGICAL
+  {id:19, category:'logical',         difficulty:1, question:'Which one does NOT belong?\n\nApple  ·  Orange  ·  Banana  ·  Carrot  ·  Grape', visual:null, options:['Apple','Orange','Carrot','Grape'], correct:2},
+  {id:20, category:'logical',         difficulty:1, question:'Which number does NOT belong?\n\n36  ·  49  ·  64  ·  80  ·  100',               visual:null, options:['36','49','80','100'],           correct:2},
+  {id:21, category:'logical',         difficulty:2, question:'All mammals are warm-blooded.\nAll whales are mammals.\n\nWhich conclusion is DEFINITELY true?', visual:null,
+   options:['All warm-blooded animals are mammals','All whales are warm-blooded','All warm-blooded animals are whales','Some whales are not warm-blooded'], correct:1},
+  {id:22, category:'logical',         difficulty:2, question:'Which instrument does NOT belong?\n\nSitar  ·  Violin  ·  Tabla  ·  Cello  ·  Guitar', visual:null, options:['Sitar','Violin','Tabla','Cello'], correct:2},
+  {id:23, category:'logical',         difficulty:3, question:'Five friends sit in a row of 5 numbered seats.\n\nBen is in seat 5. Amy is directly left of Ben (seat 4). Cal sits between Dan and Eve. Dan is NOT in seat 1 or 5.\n\nWhich seat is Eve in?', visual:null, options:['Seat 1','Seat 2','Seat 3','Seat 4'], correct:0},
+  {id:24, category:'logical',         difficulty:3, question:'Three suspects are questioned. Exactly one person is lying.\n\nAdam says: "Ben is guilty."\nBen says: "Carol is guilty."\nCarol says: "Ben is lying."\n\nWho committed the crime?', visual:null, options:['Adam','Ben','Carol','Cannot be determined'], correct:1},
+  // SPATIAL
+  {id:25, category:'spatial',         difficulty:1, question:'A square piece of paper is folded in half (one fold). A hole is punched through both layers. When unfolded, how many holes are there?', visual:null, options:['1','2','3','4'], correct:1},
+  {id:26, category:'spatial',         difficulty:1, question:'A clock shows 3:00. What does its mirror image show?\n(Mirror placed to the right of the clock)', visual:null, options:['3:00','9:00','6:00','12:00'], correct:1},
+  {id:27, category:'spatial',         difficulty:2, question:'If you look at the letter "d" in a mirror, what letter does it most resemble?', visual:null, options:['b','p','q','g'], correct:0},
+  {id:28, category:'spatial',         difficulty:2, question:'A large cube is painted red on all faces, then cut into 27 equal smaller cubes (3×3×3). How many small cubes have paint on exactly 2 faces?', visual:null, options:['8','12','16','24'], correct:1},
+  {id:29, category:'spatial',         difficulty:3, question:'A 3D solid has exactly 6 faces, 12 edges, and 8 vertices.\n\nWhich shape is it?\n(Euler\'s formula: V − E + F = 2)', visual:null, options:['Sphere','Cube','Tetrahedron','Cylinder'], correct:1},
+  {id:30, category:'spatial',         difficulty:3, question:'A rectangular box has dimensions 3 × 4 × 5 units.\n\nWhat is the length of its space diagonal — the line connecting two opposite corners through the interior?', visual:null, options:['√41 ≈ 6.4','√50 ≈ 7.1','√52 ≈ 7.2','√60 ≈ 7.7'], correct:1}
+];
+
+/* ══════════════════════════════════════════════════════════
+   ROUTER
+══════════════════════════════════════════════════════════ */
+var VIEWS = ['view-landing','view-instructions','view-test','view-results'];
+function showView(id) {
+  VIEWS.forEach(function(v) {
+    var el = document.getElementById(v);
+    if (el) el.classList.toggle('view--active', v === id);
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ══════════════════════════════════════════════════════════
+   ENGINE
+══════════════════════════════════════════════════════════ */
+var session = null;
+
+function shuffle(arr) {
+  for (var i = arr.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+  }
+  return arr;
+}
+
+function buildOrder() {
+  var byCategory = {};
+  Object.keys(CATEGORY_LABELS).forEach(function(cat) { byCategory[cat] = []; });
+  QUESTIONS.forEach(function(q) { byCategory[q.category].push(q); });
+  Object.keys(byCategory).forEach(function(cat) { shuffle(byCategory[cat]); });
+  var cats = Object.keys(byCategory);
+  var maxLen = Math.max.apply(null, cats.map(function(c) { return byCategory[c].length; }));
+  var result = [];
+  for (var i = 0; i < maxLen; i++) {
+    cats.forEach(function(cat) { if (byCategory[cat][i]) result.push(byCategory[cat][i]); });
+  }
+  return result;
+}
+
+function initSession() {
+  session = { questions: buildOrder(), currentIndex: 0, answers: [], startTime: new Date(), endTime: null, timedOut: false, completed: false };
+}
+function getSession() { return session; }
+function getCurrentQuestion() { return session.questions[session.currentIndex]; }
+function getTotalQuestions() { return session.questions.length; }
+
+function submitAnswer(selectedIndex) {
+  var q = session.questions[session.currentIndex];
+  var correct = selectedIndex === q.correct;
+  session.answers.push({ questionId: q.id, category: q.category, difficulty: q.difficulty, selectedIndex: selectedIndex, correct: correct });
+  session.currentIndex++;
+  var isLast = session.currentIndex >= session.questions.length;
+  if (isLast) finalizeSession(false);
+  return { correct: correct, isLast: isLast };
+}
+
+function finalizeSession(timedOut) {
+  if (session.completed) return;
+  session.endTime = new Date();
+  session.timedOut = !!timedOut;
+  session.completed = true;
+  while (session.answers.length < session.questions.length) {
+    var q = session.questions[session.answers.length];
+    session.answers.push({ questionId: q.id, category: q.category, difficulty: q.difficulty, selectedIndex: null, correct: false });
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   TIMER
+══════════════════════════════════════════════════════════ */
+function formatTime(s) {
+  var m = Math.floor(s / 60).toString().padStart(2, '0');
+  var sec = (s % 60).toString().padStart(2, '0');
+  return m + ':' + sec;
+}
+
+function Timer(opts) {
+  this.totalMs = opts.totalSeconds * 1000;
+  this.onTick = opts.onTick || function(){};
+  this.onWarning = opts.onWarning || function(){};
+  this.onDanger = opts.onDanger || function(){};
+  this.onExpire = opts.onExpire || function(){};
+  this._id = null; this._start = null; this._wf = false; this._df = false;
+}
+Timer.prototype.start = function() {
+  var self = this;
+  this._start = Date.now(); this._wf = false; this._df = false;
+  this.onTick(Math.ceil(this.totalMs / 1000));
+  this._id = setInterval(function() {
+    var rem = Math.max(0, Math.ceil((self.totalMs - (Date.now() - self._start)) / 1000));
+    self.onTick(rem);
+    if (!self._wf && rem <= 300) { self._wf = true; self.onWarning(); }
+    if (!self._df && rem <= 60)  { self._df = true; self.onDanger(); }
+    if (rem <= 0) { self.stop(); self.onExpire(); }
+  }, 500);
+};
+Timer.prototype.stop = function() {
+  if (this._id !== null) { clearInterval(this._id); this._id = null; }
+};
+
+/* ══════════════════════════════════════════════════════════
+   SCORING
+══════════════════════════════════════════════════════════ */
+var WEIGHTS = {1: 1.0, 2: 1.5, 3: 2.0};
+var MAX_RAW = 45.0;
+var IQ_SCALE = [{raw:0,iq:70},{raw:11.25,iq:85},{raw:22.5,iq:100},{raw:33.75,iq:115},{raw:40.5,iq:130},{raw:45,iq:145}];
+var PCT_TABLE = [{iq:70,pct:2},{iq:75,pct:5},{iq:80,pct:9},{iq:85,pct:16},{iq:90,pct:25},{iq:95,pct:37},{iq:100,pct:50},{iq:105,pct:63},{iq:110,pct:75},{iq:115,pct:84},{iq:120,pct:91},{iq:125,pct:95},{iq:130,pct:98},{iq:135,pct:99},{iq:145,pct:99}];
+
+function rawToIQ(raw) {
+  var r = Math.max(0, Math.min(MAX_RAW, raw));
+  for (var i = 1; i < IQ_SCALE.length; i++) {
+    if (r <= IQ_SCALE[i].raw) {
+      var t = (r - IQ_SCALE[i-1].raw) / (IQ_SCALE[i].raw - IQ_SCALE[i-1].raw);
+      return Math.round(IQ_SCALE[i-1].iq + t * (IQ_SCALE[i].iq - IQ_SCALE[i-1].iq));
+    }
+  }
+  return 145;
+}
+
+function iqToPercentile(iq) {
+  var v = Math.max(70, Math.min(145, iq));
+  for (var i = 1; i < PCT_TABLE.length; i++) {
+    if (v <= PCT_TABLE[i].iq) {
+      var t = (v - PCT_TABLE[i-1].iq) / (PCT_TABLE[i].iq - PCT_TABLE[i-1].iq);
+      return Math.round(PCT_TABLE[i-1].pct + t * (PCT_TABLE[i].pct - PCT_TABLE[i-1].pct));
+    }
+  }
+  return 99;
+}
+
+function iqToClassification(iq) {
+  if (iq < 80)  return {label:'Below Average',  color:'#ef4444', bg:'rgba(239,68,68,.15)'};
+  if (iq < 90)  return {label:'Low Average',     color:'#f97316', bg:'rgba(249,115,22,.15)'};
+  if (iq < 110) return {label:'Average',         color:'#eab308', bg:'rgba(234,179,8,.15)'};
+  if (iq < 120) return {label:'Above Average',   color:'#22c55e', bg:'rgba(34,197,94,.15)'};
+  if (iq < 130) return {label:'Superior',        color:'#06b6d4', bg:'rgba(6,182,212,.15)'};
+  return              {label:'Very Superior',    color:'#a855f7', bg:'rgba(168,85,247,.15)'};
+}
+
+function computeResults(sess) {
+  var raw = sess.answers.reduce(function(s,a){ return s + (a.correct ? WEIGHTS[a.difficulty] : 0); }, 0);
+  var iq  = rawToIQ(raw);
+  var cats = Object.keys(CATEGORY_LABELS).map(function(cat) {
+    var ca = sess.answers.filter(function(a){ return a.category === cat; });
+    var earned = ca.reduce(function(s,a){ return s + (a.correct ? WEIGHTS[a.difficulty] : 0); }, 0);
+    var maxP   = ca.reduce(function(s,a){ return s + WEIGHTS[a.difficulty]; }, 0);
+    return { category: cat, label: CATEGORY_LABELS[cat], percentage: maxP > 0 ? Math.round(earned/maxP*100) : 0, correct: ca.filter(function(a){return a.correct;}).length, total: ca.length };
+  });
+  return {
+    iq: iq, rawScore: raw,
+    percentile: iqToPercentile(iq),
+    classification: iqToClassification(iq),
+    categories: cats,
+    correctTotal: sess.answers.filter(function(a){return a.correct;}).length,
+    totalQuestions: sess.answers.length,
+    timeTakenSec: Math.round((sess.endTime - sess.startTime) / 1000),
+    timedOut: sess.timedOut
+  };
+}
+
+/* ══════════════════════════════════════════════════════════
+   RESULTS RENDERING
+══════════════════════════════════════════════════════════ */
+var BAR_COLORS = ['#4f46e5','#06b6d4','#10b981','#f59e0b','#a855f7'];
+
+function renderResults(results) {
+  // Score hero count-up
+  var numEl = document.getElementById('score-number');
+  var classEl = document.getElementById('score-classification');
+  var pctEl = document.getElementById('score-percentile');
+  var cl = results.classification;
+  classEl.textContent = cl.label;
+  classEl.style.color = cl.color;
+  classEl.style.background = cl.bg;
+  classEl.style.border = '1px solid ' + cl.color + '40';
+  pctEl.textContent = 'You scored higher than ' + results.percentile + '% of test takers';
+  var start = 70, dur = 1500, t0 = performance.now();
+  function easeOut(t){ return 1 - Math.pow(1-t, 3); }
+  function countUp(now) {
+    var el = now - t0, p = Math.min(el/dur, 1);
+    numEl.textContent = Math.round(start + easeOut(p) * (results.iq - start));
+    numEl.style.color = cl.color;
+    if (p < 1) requestAnimationFrame(countUp);
+  }
+  numEl.textContent = start; numEl.style.color = cl.color;
+  requestAnimationFrame(countUp);
+
+  // Gauge
+  var R = 80, ARC = Math.PI * R;
+  var pct = Math.max(0, Math.min(1, (results.iq - 70) / 90));
+  document.getElementById('score-gauge').innerHTML =
+    '<svg class="gauge-svg" viewBox="0 0 200 110">' +
+    '<path d="M 20,100 A 80,80 0 0 1 180,100" class="gauge-track"/>' +
+    '<path id="gfill" d="M 20,100 A 80,80 0 0 1 180,100" class="gauge-fill" stroke="' + cl.color + '" stroke-dasharray="0 ' + ARC.toFixed(1) + '"/>' +
+    '<text class="gauge-scale-min" x="16" y="118" text-anchor="middle">70</text>' +
+    '<text class="gauge-scale-max" x="184" y="118" text-anchor="middle">160</text>' +
+    '<text class="gauge-label-iq" x="100" y="118" text-anchor="middle">IQ Score</text>' +
+    '</svg>';
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){
+    var gf = document.getElementById('gfill');
+    if (gf) gf.setAttribute('stroke-dasharray', (pct*ARC).toFixed(1) + ' ' + ARC.toFixed(1));
+  }); });
+
+  // Summary stats
+  var ts = results.timeTakenSec;
+  document.getElementById('result-summary').innerHTML =
+    '<div class="summary-stat"><div class="summary-stat-num">' + results.correctTotal + '/' + results.totalQuestions + '</div><div class="summary-stat-label">Correct</div></div>' +
+    '<div class="summary-stat"><div class="summary-stat-num">' + Math.floor(ts/60) + ':' + String(ts%60).padStart(2,'0') + '</div><div class="summary-stat-label">Time Taken</div></div>' +
+    '<div class="summary-stat"><div class="summary-stat-num" style="color:' + cl.color + '">' + results.iq + '</div><div class="summary-stat-label">IQ Score</div></div>';
+
+  // Category bars
+  var bars = document.getElementById('chart-bars');
+  bars.innerHTML = '';
+  results.categories.forEach(function(cat, i) {
+    var color = BAR_COLORS[i % BAR_COLORS.length];
+    var row = document.createElement('div');
+    row.className = 'bar-row';
+    row.innerHTML = '<span class="bar-label">' + cat.label + '</span>' +
+      '<div class="bar-track"><div class="bar-fill" style="background:' + color + ';width:0%" data-t="' + cat.percentage + '"></div></div>' +
+      '<span class="bar-pct">' + cat.percentage + '%</span>';
+    bars.appendChild(row);
+  });
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){
+    document.querySelectorAll('.bar-fill').forEach(function(b){ b.style.width = b.dataset.t + '%'; });
+  }); });
+}
+
+/* ══════════════════════════════════════════════════════════
+   MAIN
+══════════════════════════════════════════════════════════ */
+var timer = null;
+var LETTERS = ['A','B','C','D'];
+
+document.getElementById('btn-start-landing').onclick = function(){ showView('view-instructions'); };
+document.getElementById('btn-begin-test').onclick   = function(){ startTest(); };
+document.getElementById('btn-back-landing').onclick = function(){ showView('view-landing'); };
+document.getElementById('btn-retake').onclick       = function(){ retakeTest(); };
+document.getElementById('btn-share').onclick        = function(){ shareResult(); };
+
+function startTest() {
+  initSession();
+  showView('view-test');
+  var td = document.getElementById('timer-display');
+  td.className = 'timer-display';
+  renderQuestion();
+  timer = new Timer({
+    totalSeconds: 20 * 60,
+    onTick: function(s){ document.getElementById('timer-display').textContent = formatTime(s); },
+    onWarning: function(){ var el=document.getElementById('timer-display'); el.classList.remove('danger','flash'); el.classList.add('warning'); },
+    onDanger:  function(){ var el=document.getElementById('timer-display'); el.classList.remove('warning'); el.classList.add('danger','flash'); },
+    onExpire:  function(){ finalizeSession(true); endTest(); }
+  });
+  timer.start();
+}
+
+function renderQuestion() {
+  var q    = getCurrentQuestion();
+  var sess = getSession();
+  var idx  = sess.currentIndex;
+  var total = getTotalQuestions();
+
+  document.getElementById('progress-fill').style.width = (idx / total * 100) + '%';
+  document.getElementById('progress-label').textContent = 'Question ' + (idx+1) + ' of ' + total;
+  document.getElementById('question-category').textContent = CATEGORY_LABELS[q.category];
+  document.getElementById('question-number').textContent = 'Q' + (idx+1);
+
+  var dotsEl = document.getElementById('question-difficulty');
+  dotsEl.innerHTML = [1,2,3].map(function(d){ return '<span class="diff-dot' + (d<=q.difficulty?' active':'') + '"></span>'; }).join('');
+
+  document.getElementById('question-text').textContent = q.question;
+
+  var vis = document.getElementById('question-visual');
+  if (q.visual) { vis.innerHTML = q.visual; vis.style.display = 'block'; }
+  else           { vis.innerHTML = ''; vis.style.display = 'none'; }
+
+  var opts = document.getElementById('answer-options');
+  opts.innerHTML = '';
+  q.options.forEach(function(opt, i) {
+    var btn = document.createElement('button');
+    btn.className = 'answer-option';
+    btn.textContent = opt;
+    btn.setAttribute('data-letter', LETTERS[i]);
+    btn.onclick = function(){ handleAnswer(i); };
+    opts.appendChild(btn);
+  });
+
+  var card = document.getElementById('question-card');
+  card.classList.remove('exiting');
+  card.classList.add('entering');
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ card.classList.remove('entering'); }); });
+}
+
+function handleAnswer(idx) {
+  var btns = document.querySelectorAll('.answer-option');
+  btns.forEach(function(b){ b.disabled = true; });
+  btns[idx].classList.add('selected');
+  setTimeout(function() {
+    var result = submitAnswer(idx);
+    if (result.isLast) {
+      if (timer) timer.stop();
+      endTest();
+    } else {
+      var card = document.getElementById('question-card');
+      card.classList.add('exiting');
+      setTimeout(function(){ card.classList.remove('exiting'); renderQuestion(); }, 200);
+    }
+  }, 320);
+}
+
+function endTest() {
+  if (timer) timer.stop();
+  var sess = getSession();
+  if (!sess.completed) finalizeSession(false);
+  var results = computeResults(sess);
+  showView('view-results');
+  renderResults(results);
+}
+
+function retakeTest() {
+  showView('view-landing');
+}
+
+function shareResult() {
+  var sess = getSession();
+  if (!sess || !sess.completed) return;
+  var r = computeResults(sess);
+  var text = 'I just scored ' + r.iq + ' on an IQ test — ' + r.classification.label + '! I scored higher than ' + r.percentile + '% of test takers.';
+  if (navigator.share) { navigator.share({title:'My IQ Score', text:text}).catch(function(){}); return; }
+  if (navigator.clipboard) { navigator.clipboard.writeText(text).then(function(){ showToast('Result copied to clipboard!'); }).catch(function(){ showToast(text); }); return; }
+  showToast(text);
+}
+
+function showToast(msg) {
+  var t = document.getElementById('share-toast');
+  if (!t) { t = document.createElement('div'); t.id = 'share-toast'; t.className = 'share-toast'; document.body.appendChild(t); }
+  t.textContent = msg;
+  t.classList.add('visible');
+  setTimeout(function(){ t.classList.remove('visible'); }, 3000);
+}
+</script>
 </body>
 </html>
